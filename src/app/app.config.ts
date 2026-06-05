@@ -1,12 +1,23 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import {
+    ApplicationConfig,
+    InjectionToken,
+    provideBrowserGlobalErrorListeners,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import Aura from '@primeuix/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 
 import { routes } from './app.routes';
+import { provideHttpClient } from '@angular/common/http';
+import { MessageService } from 'primeng/api';
 
+export const BASE_URL = new InjectionToken<string>('BASE_URL');
 export const appConfig: ApplicationConfig = {
     providers: [
+        {
+            provide: BASE_URL,
+            useValue: 'http://localhost:3000',
+        },
         provideBrowserGlobalErrorListeners(),
         provideRouter(routes),
         providePrimeNG({
@@ -17,5 +28,7 @@ export const appConfig: ApplicationConfig = {
                 },
             },
         }),
+        provideHttpClient(),
+        MessageService,
     ],
 };

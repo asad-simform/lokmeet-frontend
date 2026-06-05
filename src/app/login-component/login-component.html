@@ -1,0 +1,66 @@
+<div class="flex justify-center items-center h-screen">
+    <div
+        class="max-w-md w-full space-y-8 bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700"
+    >
+        <div class="text-center">
+            <h2 class="text-3xl font-extrabold text-gray-950 dark:text-white">Login to account</h2>
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
+            <div class="flex flex-col gap-2">
+                <label for="email" class="text-sm font-semibold text-gray-700 dark:text-gray-300"
+                    >Email address</label
+                >
+                <input
+                    pInputText
+                    id="email"
+                    type="email"
+                    formControlName="email"
+                    placeholder="you@example.com"
+                    class="w-full dark:bg-gray-700 dark:text-white dark:border-gray-600 px-2 py-1 rounded-sm"
+                />
+                @if (loginForm.get('email')?.touched && loginForm.get('email')?.invalid) {
+                    <small class="text-red-500 dark:text-red-400">
+                        Please enter a valid email address.
+                    </small>
+                }
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <label for="password" class="text-sm font-semibold text-gray-700 dark:text-gray-300"
+                    >Password</label
+                >
+                <p-password
+                    id="password"
+                    formControlName="password"
+                    [toggleMask]="true"
+                    [feedback]="false"
+                    class="w-full dark:bg-gray-700 dark:text-white dark:border-gray-600 px-2 py-1 rounded-xl"
+                    placeholder="••••••••"
+                ></p-password>
+                @if (loginForm.get('password')?.touched && loginForm.get('password')?.invalid) {
+                    <small class="text-red-500 dark:text-red-400">
+                        Password must be at least 8 characters long.
+                    </small>
+                }
+            </div>
+            <p class="text-center mt-2 text-sm text-gray-600 dark:text-gray-400">
+                Don't have an account?
+                <a
+                    routerLink="/signup"
+                    class="font-medium text-primary-600 hover:text-primary-500 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                    >Sign up</a
+                >
+            </p>
+            <div>
+                <button
+                    pButton
+                    pRipple
+                    type="submit"
+                    label="Login"
+                    class="w-full justify-center text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 font-bold py-3 px-4 rounded-lg shadow transition duration-200"
+                ></button>
+            </div>
+        </form>
+    </div>
+</div>
