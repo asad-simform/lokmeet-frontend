@@ -55,7 +55,22 @@ export class AuthService {
             };
         }>(this.baseUrl + '/api/auth/login', data, {
             observe: 'response',
-            withCredentials: true,
         });
+    }
+
+    verifyOtp(data: { otp: number; email: string }) {
+        return this.http.post<{ message: string }>(this.baseUrl + '/api/auth/verify-email', data, {
+            observe: 'response',
+        });
+    }
+
+    resendOtp(email: string) {
+        return this.http.post<{ message: string }>(
+            this.baseUrl + '/api/auth/resend-otp',
+            { email },
+            {
+                observe: 'response',
+            },
+        );
     }
 }
