@@ -55,12 +55,14 @@ export class AuthService {
             };
         }>(this.baseUrl + '/api/auth/login', data, {
             observe: 'response',
+            withCredentials: true,
         });
     }
 
     verifyOtp(data: { otp: number; email: string }) {
         return this.http.post<{ message: string }>(this.baseUrl + '/api/auth/verify-email', data, {
             observe: 'response',
+            withCredentials: true,
         });
     }
 
@@ -72,5 +74,12 @@ export class AuthService {
                 observe: 'response',
             },
         );
+    }
+
+    logout() {
+        return this.http.get<{ message: string }>(this.baseUrl + '/api/auth/logout', {
+            observe: 'response',
+            withCredentials: true,
+        });
     }
 }

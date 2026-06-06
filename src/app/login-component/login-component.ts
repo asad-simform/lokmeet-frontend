@@ -53,6 +53,7 @@ export class LoginComponent {
                     next: (data) => {
                         if (data.ok) {
                             this.toastService.showSuccess(data.body?.message || '');
+                            this.authService.loginStatus.set(true);
                             this.router.navigate(['']);
                         }
                     },
