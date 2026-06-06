@@ -18,6 +18,15 @@ interface ICategoryTags {
     color: string | null;
 }
 
+interface IUserDetails {
+    email: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+    avatarUrl: string | null;
+    isOwner: boolean;
+}
+
 @Injectable({
     providedIn: 'root',
 })
@@ -81,5 +90,15 @@ export class AuthService {
             observe: 'response',
             withCredentials: true,
         });
+    }
+
+    getUserDetails() {
+        return this.http.get<{ message: string; data: IUserDetails }>(
+            this.baseUrl + '/api/user/me',
+            {
+                observe: 'response',
+                withCredentials: true,
+            },
+        );
     }
 }

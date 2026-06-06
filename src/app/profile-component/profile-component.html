@@ -1,1 +1,138 @@
-<p>profile-component works!</p>
+<div
+    class="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300 py-12 px-4 sm:px-6 lg:px-8"
+>
+    <app-register-owner-component [(visible)]="visible" />
+    <div
+        class="max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden"
+    >
+        <div
+            class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100 dark:divide-gray-800"
+        >
+            <div
+                class="p-8 flex flex-col items-center justify-center bg-gray-50/50 dark:bg-gray-900/50"
+            >
+                <div class="relative group">
+                    @if (user()?.avatarUrl) {
+                        <div
+                            *ngIf="user()?.avatarUrl"
+                            class="w-40 h-40 rounded-full overflow-hidden border-4 border-white dark:border-gray-800 shadow-lg"
+                        >
+                            <img
+                                [src]="user()?.avatarUrl"
+                                alt="User Avatar"
+                                class="w-full h-full object-cover"
+                            />
+                        </div>
+                    } @else {
+                        <div
+                            class="w-40 h-40 rounded-full bg-linear-to-tr from-blue-600 to-indigo-500 border-4 border-white dark:border-gray-800 shadow-lg flex flex-col items-center justify-center text-white select-none"
+                        >
+                            <span class="text-4xl font-black uppercase tracking-tight">
+                                {{ user()?.firstName?.charAt(0) }}{{ user()?.lastName?.charAt(0) }}
+                            </span>
+                        </div>
+                    }
+                </div>
+
+                <h2 class="mt-4 text-xl font-black text-gray-950 dark:text-white">
+                    {{ user()?.firstName }} {{ user()?.lastName }}
+                </h2>
+
+                <span
+                    [ngClass]="
+                        user()?.isOwner
+                            ? 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-400 border-indigo-200'
+                            : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-transparent'
+                    "
+                    class="mt-2 inline-flex items-center gap-1 px-3 py-1 text-xs font-bold rounded-full border"
+                >
+                    <i
+                        [class]="
+                            user()?.isOwner
+                                ? 'pi pi-verified text-[10px]'
+                                : 'pi pi-user text-[10px]'
+                        "
+                    ></i>
+                    {{ user()?.isOwner ? 'Organizer / Owner' : 'Community Member' }}
+                </span>
+            </div>
+
+            <div class="p-8 md:col-span-2 flex flex-col justify-between gap-8">
+                <div class="space-y-6">
+                    <h3
+                        class="text-lg font-bold text-gray-950 dark:text-white tracking-tight border-b border-gray-100 dark:border-gray-800 pb-2"
+                    >
+                        Account Specifications
+                    </h3>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="space-y-1">
+                            <span
+                                class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider"
+                                >First Name</span
+                            >
+                            <p class="text-sm font-semibold text-gray-900 dark:text-gray-200">
+                                {{ user()?.firstName }}
+                            </p>
+                        </div>
+
+                        <div class="space-y-1">
+                            <span
+                                class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider"
+                                >Last Name</span
+                            >
+                            <p class="text-sm font-semibold text-gray-900 dark:text-gray-200">
+                                {{ user()?.lastName }}
+                            </p>
+                        </div>
+
+                        <div class="space-y-1 sm:col-span-2">
+                            <span
+                                class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider"
+                                >Email Address</span
+                            >
+                            <p
+                                class="text-sm font-semibold text-gray-900 dark:text-gray-200 flex items-center gap-2"
+                            >
+                                <i class="pi pi-envelope text-gray-400"></i> {{ user()?.email }}
+                            </p>
+                        </div>
+
+                        <div class="space-y-1 sm:col-span-2">
+                            <span
+                                class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider"
+                                >Phone Number</span
+                            >
+                            <p
+                                class="text-sm font-semibold text-gray-900 dark:text-gray-200 flex items-center gap-2"
+                            >
+                                <i class="pi pi-phone text-gray-400"></i> {{ user()?.phone }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-gray-100 dark:border-gray-800 flex justify-end">
+                    @if (!user()?.isOwner) {
+                        <button
+                            pButton
+                            pRipple
+                            type="button"
+                            (click)="registerAsOwner()"
+                            label="Register as Owner"
+                            icon="pi pi-id-card"
+                            class="bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-bold py-2.5 px-5 rounded-xl border-none transition-all shadow-md flex items-center gap-2"
+                        ></button>
+                    } @else {
+                        <span
+                            class="text-sm font-medium text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-950/30 px-4 py-2 rounded-xl border border-emerald-200/50 dark:border-emerald-900/30"
+                        >
+                            <i class="pi pi-check-circle"></i>
+                            You are an authorized LokMeet host operator
+                        </span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
