@@ -4,7 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { AuthService } from '../auth-service';
 import { ToastService } from '../toast-service';
-import { RegisterOwnerComponent } from '../register-owner-component/register-owner-component';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 interface UserProfile {
     email: string;
@@ -17,14 +17,13 @@ interface UserProfile {
 
 @Component({
     selector: 'app-profile-component',
-    imports: [CommonModule, ButtonModule, RippleModule, RegisterOwnerComponent],
+    imports: [CommonModule, ButtonModule, RippleModule, RouterLink, RouterOutlet],
     templateUrl: './profile-component.html',
     styleUrl: './profile-component.css',
 })
 export class ProfileComponent {
     private authService = inject(AuthService);
     private toastService = inject(ToastService);
-    visible = signal(false);
     user = signal<UserProfile | undefined>(undefined);
     ngOnInit(): void {
         this.authService.getUserDetails().subscribe({
@@ -39,7 +38,5 @@ export class ProfileComponent {
     registerAsOwner(): void {
         console.log('Initiating business ownership verification flow...');
         // Execute backend api patch updates here
-        // this.user.up= true;
-        this.visible.set(true);
     }
 }

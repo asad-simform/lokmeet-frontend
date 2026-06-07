@@ -6,6 +6,7 @@ import { WrapperComponent } from './wrapper-component/wrapper-component';
 import { HomeComponent } from './home-component/home-component';
 import { ProfileComponent } from './profile-component/profile-component';
 import { authGuard } from './guards/auth-guard';
+import { RegisterOwnerComponent } from './register-owner-component/register-owner-component';
 
 export const routes: Routes = [
     {
@@ -31,6 +32,11 @@ export const routes: Routes = [
             {
                 path: 'profile',
                 component: ProfileComponent,
+                canActivate: [authGuard],
+            },
+            {
+                path: 'profile/register-owner',
+                component: RegisterOwnerComponent,
                 canActivate: [authGuard],
             },
         ],

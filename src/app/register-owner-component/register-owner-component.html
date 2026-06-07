@@ -1,21 +1,396 @@
-<p-dialog
-    header="Edit Profile"
-    [closable]="false"
-    [modal]="true"
-    [visible]="visible()"
-    [style]="{ width: '25rem' }"
+<div
+    class="min-h-screen bg-gray-50 dark:bg-gray-950 transition-colors duration-300 py-12 px-4 sm:px-6 lg:px-8"
 >
-    <span class="p-text-secondary block mb-8">Update your information.</span>
-    <div class="flex items-center gap-4 mb-4">
-        <label for="username" class="font-semibold w-24">Username</label>
-        <input pInputText id="username" class="flex-auto" autocomplete="off" />
+    <div
+        class="max-w-4xl mx-auto bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden"
+    >
+        <!-- Form Banner Head -->
+        <div class="bg-linear-to-r from-indigo-600 to-blue-600 p-8 text-white">
+            <h1 class="text-2xl font-black tracking-tight">Host Verification & Onboarding</h1>
+            <p class="text-sm text-indigo-100 mt-1">
+                Submit your legal business declarations and property papers to activate venue
+                listings.
+            </p>
+        </div>
+
+        <!-- Form Core Payload Context -->
+        <form [formGroup]="ownerForm" (ngSubmit)="onSubmit()" class="p-8 space-y-10">
+            <!-- SECTION 1: BUSINESS LEGAL DATA -->
+            <div class="space-y-4">
+                <h3
+                    class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 border-b border-gray-100 dark:border-gray-800 pb-2"
+                >
+                    <i class="pi pi-briefcase text-indigo-500"></i> Corporate Entity Parameters
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="flex flex-col gap-1.5 md:col-span-1">
+                        <label
+                            class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                            >Registered Business Name</label
+                        >
+                        <input
+                            type="text"
+                            pInputText
+                            formControlName="businessName"
+                            placeholder="e.g. LokMeet Hospitality Pvt Ltd"
+                            class="w-full"
+                        />
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        <label
+                            class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                            >PAN Card Number</label
+                        >
+                        <input
+                            type="text"
+                            pInputText
+                            formControlName="panNumber"
+                            placeholder="ABCDE1234F"
+                            maxLength="10"
+                            class="p-inputtext-sm uppercase font-mono"
+                        />
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        <label
+                            class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                            >GSTIN Number</label
+                        >
+                        <input
+                            type="text"
+                            pInputText
+                            formControlName="gstNumber"
+                            placeholder="24ABCDE1234F1Z5"
+                            maxLength="15"
+                            class="p-inputtext-sm uppercase font-mono"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: VENUE PROFILE & COORDINATES -->
+            <div class="space-y-4">
+                <h3
+                    class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 border-b border-gray-100 dark:border-gray-800 pb-2"
+                >
+                    <i class="pi pi-building text-indigo-500"></i> Venue Technical Profile
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="flex flex-col gap-1.5">
+                        <label
+                            class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                            >Venue Name</label
+                        >
+                        <input
+                            type="text"
+                            pInputText
+                            formControlName="venueName"
+                            placeholder="e.g. Skydeck Skyline Lounge"
+                            class="w-full"
+                        />
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        <label
+                            class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                            >Venue Type Selection</label
+                        >
+                        <p-select
+                            formControlName="venueType"
+                            [options]="venueOptions"
+                            optionLabel="label"
+                            optionValue="value"
+                            placeholder="Select Type"
+                            styleClass="w-full rounded-xl border border-gray-200 dark:border-gray-800"
+                        ></p-select>
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        <label
+                            class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                            >Maximum Headcount Capacity</label
+                        >
+                        <p-inputNumber
+                            formControlName="capacity"
+                            placeholder="e.g. 250"
+                            [showButtons]="true"
+                            [min]="1"
+                            buttonLayout="horizontal"
+                            spinnerMode="horizontal"
+                            incrementButtonIcon="pi pi-plus"
+                            decrementButtonIcon="pi pi-minus"
+                            styleClass="w-full"
+                            inputStyleClass="w-full rounded-xl text-center"
+                        ></p-inputNumber>
+                    </div>
+                </div>
+
+                <!-- Custom Structural Map Section -->
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
+                    <div class="md:col-span-3">
+                        <label
+                            class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider block mb-2"
+                            >Geographical Marker Reference Pin</label
+                        >
+                        <app-form-map
+                            formControlName="geoCoordinates"
+                            height="500px"
+                        ></app-form-map>
+                    </div>
+
+                    <div class="md:col-span-1 flex flex-col gap-4 pt-7">
+                        <div
+                            class="p-3 bg-gray-50 dark:bg-gray-800/60 rounded-xl border border-gray-100 dark:border-gray-800 shadow-inner"
+                        >
+                            <span
+                                class="text-[10px] font-black text-gray-400 uppercase tracking-widest block"
+                                >Latitude (Lat)</span
+                            >
+                            <span
+                                class="text-sm font-mono font-bold text-gray-800 dark:text-gray-200"
+                                >{{
+                                    ownerForm.get('geoCoordinates')?.value?.lat || '0.000000'
+                                }}</span
+                            >
+                        </div>
+                        <div
+                            class="p-3 bg-gray-50 dark:bg-gray-800/60 rounded-xl border border-gray-100 dark:border-gray-800 shadow-inner"
+                        >
+                            <span
+                                class="text-[10px] font-black text-gray-400 uppercase tracking-widest block"
+                                >Longitude (Lng)</span
+                            >
+                            <span
+                                class="text-sm font-mono font-bold text-gray-800 dark:text-gray-200"
+                                >{{
+                                    ownerForm.get('geoCoordinates')?.value?.lng || '0.000000'
+                                }}</span
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: PHYSICAL ADDRESS MATRIX -->
+            <div class="space-y-4">
+                <h3
+                    class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 border-b border-gray-100 dark:border-gray-800 pb-2"
+                >
+                    <i class="pi pi-map-marker text-indigo-500"></i> Location Coordinates Matrix
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="flex flex-col gap-1.5 md:col-span-4">
+                        <label
+                            class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                            >Street Level Address</label
+                        >
+                        <input
+                            type="text"
+                            pInputText
+                            formControlName="address"
+                            placeholder="Floor level, Building complex, Landmark street details..."
+                            class="w-full"
+                        />
+                    </div>
+
+                    <div class="flex flex-col gap-1.5 md:col-span-2">
+                        <label
+                            class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                            >City</label
+                        >
+                        <input
+                            type="text"
+                            pInputText
+                            formControlName="city"
+                            placeholder="Ahmedabad"
+                            class="w-full"
+                        />
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        <label
+                            class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                            >State</label
+                        >
+                        <input
+                            type="text"
+                            pInputText
+                            formControlName="state"
+                            placeholder="Gujarat"
+                            class="w-full"
+                        />
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        <label
+                            class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                            >Zip Code</label
+                        >
+                        <input
+                            type="text"
+                            pInputText
+                            formControlName="zipCode"
+                            placeholder="380001"
+                            maxLength="6"
+                            class="w-full font-mono"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: DEED VERIFICATION & PRIME FILE UPLOADS -->
+            <div class="space-y-4">
+                <h3
+                    class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 border-b border-gray-100 dark:border-gray-800 pb-2"
+                >
+                    <i class="pi pi-file-pdf text-indigo-500"></i> Property Legal Deeds &
+                    Verification Files
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start mb-6">
+                    <div class="flex flex-col gap-1.5">
+                        <label
+                            class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                            >Deed Clarification Document Type</label
+                        >
+                        <p-select
+                            formControlName="propertyPaperType"
+                            [options]="paperOptions"
+                            optionLabel="label"
+                            optionValue="value"
+                            placeholder="Select Documentation Type"
+                            styleClass="w-full rounded-xl border border-gray-200 dark:border-gray-800"
+                        ></p-select>
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        <label
+                            class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                            >Property Unique ID Number</label
+                        >
+                        <input
+                            type="text"
+                            pInputText
+                            formControlName="propertyNumber"
+                            placeholder="e.g. TAX-99823-MUM"
+                            class="w-full font-mono"
+                        />
+                    </div>
+                </div>
+
+                <!-- Split Upload Block Matrix -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+                    <!-- File 1: Identity -->
+                    <div
+                        class="flex flex-col gap-2 p-4 rounded-2xl bg-gray-50/50 dark:bg-gray-900/30 border border-gray-100 dark:border-gray-800"
+                    >
+                        <div
+                            class="flex items-center gap-2 text-xs font-bold text-gray-700 dark:text-gray-300 uppercase"
+                        >
+                            <i class="pi pi-id-card text-indigo-500 text-lg"></i> 1. GST Certificate
+                        </div>
+                        <p-fileUpload
+                            mode="basic"
+                            chooseLabel="Attach File"
+                            chooseIcon="pi pi-upload"
+                            name="gstCert"
+                            maxFileSize="5000000"
+                            (onSelect)="onPrimeFileSelect($event, 'gstCert')"
+                            styleClass="p-button-outlined p-button-sm w-full"
+                        ></p-fileUpload>
+                        @if (uploadedFiles['gstCert']) {
+                            <span
+                                class="text-[11px] text-emerald-600 truncate flex items-center gap-1 mt-1"
+                            >
+                                <i class="pi pi-check"></i> {{ uploadedFiles['gstCert']?.name }}
+                            </span>
+                        }
+                    </div>
+
+                    <!-- File 2: Property Deed Documents -->
+                    <div
+                        class="flex flex-col gap-2 p-4 rounded-2xl bg-gray-50/50 dark:bg-gray-900/30 border border-gray-100 dark:border-gray-800"
+                    >
+                        <div
+                            class="flex items-center gap-2 text-xs font-bold text-gray-700 dark:text-gray-300 uppercase"
+                        >
+                            <i class="pi pi-file-pdf text-indigo-500 text-lg"></i> 2. Property Deed
+                        </div>
+                        <p-fileUpload
+                            mode="basic"
+                            chooseLabel="Attach File"
+                            chooseIcon="pi pi-upload"
+                            name="propertyDeed"
+                            maxFileSize="10000000"
+                            (onSelect)="onPrimeFileSelect($event, 'propertyDeed')"
+                            styleClass="p-button-outlined p-button-sm w-full"
+                        ></p-fileUpload>
+                        @if (uploadedFiles['propertyDeed']) {
+                            <span
+                                class="text-[11px] text-emerald-600 truncate flex items-center gap-1 mt-1"
+                            >
+                                <i class="pi pi-check"></i>
+                                {{ uploadedFiles['propertyDeed']?.name }}
+                            </span>
+                        }
+                    </div>
+
+                    <!-- File 3: Showcase Imagery -->
+                    <div
+                        class="flex flex-col gap-2 p-4 rounded-2xl bg-gray-50/50 dark:bg-gray-900/30 border border-gray-100 dark:border-gray-800"
+                    >
+                        <div
+                            class="flex items-center gap-2 text-xs font-bold text-gray-700 dark:text-gray-300 uppercase"
+                        >
+                            <i class="pi pi-images text-indigo-500 text-lg"></i> 3. PAN Card
+                        </div>
+                        <p-fileUpload
+                            mode="basic"
+                            chooseLabel="Attach File"
+                            chooseIcon="pi pi-upload"
+                            name="panCard"
+                            accept="image/*"
+                            maxFileSize="5000000"
+                            (onSelect)="onPrimeFileSelect($event, 'panCard')"
+                            styleClass="p-button-outlined p-button-sm w-full"
+                        ></p-fileUpload>
+                        @if (uploadedFiles['panCard']) {
+                            <span
+                                class="text-[11px] text-emerald-600 truncate flex items-center gap-1 mt-1"
+                            >
+                                <i class="pi pi-check"></i> {{ uploadedFiles['panCard']?.name }}
+                            </span>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- BUTTON CONTROL FOOTER -->
+            <div
+                class="pt-6 border-t border-gray-100 dark:border-gray-800 flex items-center justify-end gap-4"
+            >
+                <button
+                    pButton
+                    pRipple
+                    type="button"
+                    label="Discard Draft"
+                    class="p-button-text p-button-secondary font-bold text-sm"
+                ></button>
+
+                <button
+                    pButton
+                    pRipple
+                    type="submit"
+                    [disabled]="ownerForm.invalid"
+                    label="Register & Submit Verification"
+                    icon="pi pi-check-circle"
+                    class="bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 text-white font-bold text-sm py-2.5 px-6 rounded-xl border-none transition-all shadow-md"
+                ></button>
+            </div>
+        </form>
     </div>
-    <div class="flex items-center gap-4 mb-8">
-        <label for="email" class="font-semibold w-24">Email</label>
-        <input pInputText id="email" class="flex-auto" autocomplete="off" />
-    </div>
-    <div class="flex justify-end gap-2">
-        <p-button label="Cancel" severity="secondary" (click)="cancel()" />
-        <p-button label="Save" (click)="save()" />
-    </div>
-</p-dialog>
+</div>
