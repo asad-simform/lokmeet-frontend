@@ -19,4 +19,15 @@ export class UserService {
             },
         );
     }
+
+    registerVenue(data: FormData) {
+        return this.http.post<{ message: string }>(
+            this.baseUrl + '/api/user/register-venue',
+            data,
+            {
+                observe: 'response',
+                withCredentials: true,
+            },
+        );
+    }
 }

@@ -7,6 +7,7 @@ import { HomeComponent } from './home-component/home-component';
 import { ProfileComponent } from './profile-component/profile-component';
 import { authGuard } from './guards/auth-guard';
 import { RegisterOwnerComponent } from './register-owner-component/register-owner-component';
+import { RegisterVenueComponent } from './register-venue-component/register-venue-component';
 
 export const routes: Routes = [
     {
@@ -37,6 +38,11 @@ export const routes: Routes = [
             {
                 path: 'profile/register-owner',
                 component: RegisterOwnerComponent,
+                canActivate: [authGuard],
+            },
+            {
+                path: 'profile/register-venue',
+                component: RegisterVenueComponent,
                 canActivate: [authGuard],
             },
         ],

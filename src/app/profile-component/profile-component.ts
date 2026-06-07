@@ -35,8 +35,4 @@ export class ProfileComponent {
             },
         });
     }
-    registerAsOwner(): void {
-        console.log('Initiating business ownership verification flow...');
-        // Execute backend api patch updates here
-    }
 }
